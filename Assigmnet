@@ -1,0 +1,159 @@
+1: select festival_name, country, ticket_type
+from festivaldata
+
+2:select festival_name,
+        city,
+        date
+from festivaldata 
+where country = 'usa'
+
+3: select festival_name,
+        ticket_type,
+        price 
+from festivaldata
+where price>100 and country='India'
+
+4:select festival_name,
+        country,
+        ticket_type
+from festivaldata 
+where country= 'India' or country='USA'
+
+5: select sum(price) as total_revenue,
+ticket_type
+from festivaldata 
+group  by ticket_type
+
+
+6:select festival_name,
+        max(price)
+from festivaldata 
+group by festival_name 
+order by max(price) desc
+limit 5
+
+
+7:select festival_name,
+        price 
+from festivaldata 
+order by price desc
+limit 5 offset 5
+
+
+
+8:select festival_name,
+ sum(organizer_profit) as total_profit
+ from festivaldata 
+ where country = 'India' 
+ group by festival_name
+ having sum(price)>100
+
+
+
+9:select country,
+    max(organizer_profit) as max_profit 
+from festivaldata
+group by country
+
+
+
+10:select ticket_type,
+        sum(organizer_profit) as total_profit
+from festivaldata
+where country = 'India' or country='USA'
+group by ticket_type
+having avg(price)> 50
+
+
+
+11:select movie_name,
+        avg(rating) as rating 
+from user_watch_activity 
+group by movie_name
+order by avg(rating) desc
+limit 5 offset 3
+
+
+
+12:select user_name,
+    watch_time_minutes 
+from user_watch_activity 
+where watch_time_minutes between 100 and 150
+
+
+
+
+
+13:select user_name,
+        watch_time_minutes as total_watch_time
+from user_watch_activity
+where genre = 'Sci-fi'
+order by watch_time_minutes asc
+limit 1
+
+
+
+14:select genre,
+        watch_time_minutes as total_watch_time 
+from user_watch_activity 
+where country = 'japan'
+order by total_watch_time desc
+limit 1
+
+
+
+15:select user_name,
+    total_movies_watched
+from user_watch_activity 
+where  subscription_type = 'Premium'
+order by total_movies_watched desc
+limit 5
+
+
+
+16:select transaction_id,
+        customer_name,
+        transaction_value 
+from payment_transactions 
+order by transaction_value desc
+limit 5
+
+
+
+17:
+
+
+
+
+ 18:select distinct payment_method,
+        avg(transaction_value)
+from payment_transactions
+group by payment_method
+order by avg(transaction_value) desc
+limit 1
+
+
+
+19:select customer_name,
+        sum(transaction_value),
+        case 
+        when sum(transaction_value) > 2000 then 'High Spend'
+        when sum(transaction_value) between 1000 and  2000 then 'Medium Spend'
+        when sum(transaction_value) < 1000 then 'Low Spend'
+        end total_spending 
+from payment_transactions 
+group  by customer_name
+
+
+
+20:select customer_name,
+        round(avg(customer_rating),2) as avg_rating
+from payment_transactions 
+group by customer_name 
+having avg(customer_rating)<4
+
+
+
+
+
+
