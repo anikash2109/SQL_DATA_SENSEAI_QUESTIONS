@@ -154,6 +154,212 @@ having avg(customer_rating)<4
 
 
 
+21: select product_name,
+        product_category,
+        likes_count
+from amazereviews 
+where likes_count> 100 and (discount_applied)<10
+and (review_rating = 4 or review_rating = 5)
+ 
+
+
+
+22:select product_name,
+        review_rating,
+        delivery_days,
+        discount_applied 
+from amazereviews 
+where (review_rating=1 or review_rating=2)
+and (delivery_days>7 or discount_applied<5)
+
+
+
+23:select review_id,
+        reviewer_name,
+        review_text 
+from amazereviews 
+where review_text like 'great%' and review_text like '%perfectly%'
+
+
+
+24:select distinct product_name,
+        product_category
+from amazereviews 
+where product_name like '_l_____'
+
+
+
+25:select product_name,
+        product_price,
+        likes_count
+from amazereviews 
+where (product_price not between 50 and 200) and
+likes_count> 100
+
+
+
+26:select product_name,
+        review_rating,
+        delivery_days
+from amazereviews 
+where (review_rating = 4 or review_rating=5) and
+(verified_purchase = 'Y') and 
+(delivery_days<=5)
+
+
+
+27:select product_name,
+        product_category
+from amazereviews 
+where product_name like 'S_________'
+
+
+
+28:select review_id,
+        reviewer_name,
+        review_text 
+from amazereviews 
+where (review_text like 'G%' and review_text like '%price%' )and 
+ (review_text like '%_____quality%')
+
+
+
+29: select distinct product_name,
+        review_text,
+        product_price,
+        review_rating
+from amazereviews 
+where (review_text not like '%great%' or review_rating not like '%good%')
+and (product_price not between 10 and 100)
+and (review_rating=1 or review_rating=2)
+
+
+
+30:select review_id,
+        product_name,
+        review_text,
+        product_price,
+        likes_count 
+from amazereviews 
+where (review_text like '%word%' or review_text like 'A%')
+and (product_price between 20 and 200)
+and (review_text not like '%poor%')
+and (likes_count>50)
+
+
+
+31:select room_type,
+        sum(total_amount) as total_revenue 
+from hotelbookings 
+group by room_type 
+order by total_revenue desc
+
+
+
+32:select 
+        case
+        when breakfast_included = 1 then 'with  breakfast'
+        when breakfast_included = 0 then 'without breakfast'
+        end breakfast_option,
+        avg(feedback_score ) as average_feedback
+from hotelbookings 
+group by breakfast_option
+
+
+
+33: select guest_name,
+        max(total_amount) as total_amount,
+        membership_level
+from hotelbookings
+group by guest_name,membership_level 
+order by max(total_amount) desc
+limit 5
+
+
+
+34:select count(booking_id) as number_of_bookings,
+        membership_level 
+from hotelbookings 
+group by membership_level
+
+
+
+35:select city,
+        sum(total_amount) as total_revenue       (Not got Correct on website just code)
+from hotelbookings
+where feedback_score>=7 and (total_guests<2)
+group by city 
+having count(booking_id)=3
+order by total_revenue desc
+
+
+
+
+36:select city,
+    sum(total_amount) as total_revenue,
+    guest_name 
+from hotelbookings 
+where membership_level = 'platinum'
+group by city, guest_name
+
+
+
+37:select city,
+        sum(total_amount) as total_Strict_Revenue,
+        count(booking_id) as booking_count,
+        case 
+        when sum(total_amount)>40000 then 'High Revenue'     (Not got Correct on website just code)
+        else 'Low Revenue'
+        end revenue_category
+from hotelbookings 
+where cancellation_policy = 'strict'
+group by city 
+having count(booking_id) = 2
+
+
+
+38:select membership_level,
+        avg(feedback_score) as avg_feedback,
+        case 
+        when avg(feedback_score)>=9 then 'Excellent Feedback'
+        when avg(feedback_score)between 7 and 9 then 'Good Feedback'    (giving me incorrect/ output is correct)
+        when avg(feedback_score)<7 then 'Needs Improvement'
+        end feedback_category
+from hotelbookings 
+group by membership_level
+having count(booking_id)>=5 
+order  by avg(feedback_score) desc
+
+
+39: select 
+case 
+when total_guests between 1 and 2 then 'Small group'
+when total_guests between 3 and 4 then 'Medium group'
+when total_guests >5  then 'Large group'
+end group_category,
+sum(total_amount) as total_revenue,
+sum(total_amount)*100/(select sum(total_guests) from hotelbookings) as reveue_percentage
+from hotelbookings
+group by 
+        case
+        when  total_guests between 1 and 2 then 'Small group'
+        when total_guests between 3 and 4 then 'Medium group'
+        when total_guests >5  then 'Large group'
+    end 
+having reveue_percentage>30
+order by total_revenue desc
+
+
+
+40:
+
+
+
+
+
+
+
+
 
 
 
