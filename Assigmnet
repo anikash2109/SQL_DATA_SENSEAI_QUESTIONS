@@ -357,6 +357,224 @@ order by total_revenue desc
 
 
 
+41: select book_title, 
+        sum(sales_amount) as sales_amount,
+        sum(sales_count) as sales_count,
+        publisher
+from bookreviews 
+where (book_title like '%Love%' or book_title like '%Heart%') 
+group by book_title, publisher
+having sum(sales_amount)>3000 and 
+sum(sales_count)>100
+
+
+
+42:select genre,
+        avg(rating) as avg_rating,
+        sum(sales_amount)
+from bookreviews 
+where genre like 'R%'
+group by genre 
+having avg(rating)>=4
+
+
+
+43:select author_name, 
+        sum(sales_count)
+from bookreviews 
+where review_text like '%Masterpiece%'
+group by author_name
+having sum(sales_count)>150
+order by sum(sales_count) desc
+
+
+
+44:select publisher,
+    sum(sales_amount),
+    sum(sales_count)
+from bookreviews 
+where (review_text like '%Fantastic%' or review_text like '%Thrilling%')
+group by publisher
+having sum(sales_amount)>3000 and 
+sum(sales_count)>100
+order by sum(sales_amount) desc
+
+
+
+45:select book_title,
+        genre,
+        sum(sales_amount),
+        avg(rating) as avg_rating 
+from bookreviews 
+where genre = 'Science' and 
+(review_text  like '%plot%' or review_text like '%inspiring%')
+group by genre, book_title
+having sum(sales_amount)>3000
+
+
+
+46:select membership_type,
+        sum(session_revenue),
+        case
+        when sum(session_revenue)>300 then 'High Revenue'
+         when sum(session_revenue) between 150 and 300 then 'Medium Revenue'
+        else 'Low Revenue'
+        end Revenue_category
+from workoutanalytics 
+group by membership_type
+
+
+
+47:select session_type,
+        avg(workout_duration) as avg_duration,
+        avg(calories_burned) as avg_calories, 
+        case 
+        when avg(workout_duration)>75 then 'High Intensity'
+        when avg(workout_duration) between 45 and 75 then 'Medium Intensity'
+        else 'low intensity'
+        end intensity_level 
+from workoutanalytics 
+group by session_type 
+
+
+
+
+48:select trainer_session,
+        avg(satisfaction_rating) as avg_satisfaction,
+        case
+        when avg(satisfaction_rating)>= 4.5 then 'Excellent'
+        when avg(satisfaction_rating) between 3.5 and  4.5 then 'Good'
+        else 'Needs Improvement'
+        end rating_quality 
+from workoutanalytics
+group by trainer_session
+
+
+
+49:select workout_id,
+        session_type,
+        workout_duration,
+        session_revenue,
+        case 
+        when session_revenue>40 and workout_duration>60 then 'High Value'
+        else 'Regular Value'
+        end value_category
+from workoutanalytics 
+
+
+
+50:select trainer_session,
+        sum(calories_burned) as total_calories,
+        count(session_type) as  total_sessions,
+        case 
+        when sum(calories_burned) > 4000 then 'High Impact'
+        when sum(calories_burned) between 2000 and 4000 then 'Medium Impact'
+        else 'Low impact'
+        end trainer_impact 
+from workoutanalytics
+where trainer_session = 'Y' 
+group by trainer_session 
+
+
+
+
+51:select date(order_delivered_timestamp),
+       count(order_id) as  total_deliveries 
+from deliverydash
+group by date(order_delivered_timestamp)
+order by count(order_id) desc 
+limit 1
+
+
+
+52: select delivery_agent,
+        avg(minute(actual_delivery_time)) as delivery_time    (Not sure, Not Correct)   
+from deliverydash 
+group by delivery_agent 
+order by avg(minute(actual_delivery_time)) desc 
+limit 3
+(SELECT 
+    Delivery_Agent, 
+    AVG(TIME_TO_SEC(Actual_Delivery_Time)) / 60 AS Average_Delivery_Time_Minutes     (correct querry)
+FROM 
+    DeliveryDash
+GROUP BY 
+    Delivery_Agent
+ORDER BY 
+    Average_Delivery_Time_Minutes DESC
+LIMIT 3;)
+
+
+
+53:select date(order_delivered_timestamp),
+ sum(order_amount) as total_revenue
+from deliverydash 
+group by date(order_delivered_timestamp)
+having sum(order_amount)>50
+
+
+
+54:select city,
+    max(order_delivered_timestamp) as latest_delivery_time,
+    min(order_delivered_timestamp) as earliest_delivery_time
+from deliverydash 
+group by city 
+
+
+
+55:
+
+
+
+
+
+
+56: select date(order_delivered_timestamp) as delivery_date,
+        sum(order_amount) as total_revenue 
+from deliverydash 
+group by date(order_delivered_timestamp)
+order by sum(order_amount) desc
+limit 1
+
+
+
+57:select order_id,
+        customer_name,
+        order_delivered_timestamp,
+        city 
+from deliverydash 
+where dayofweek(order_delivered_timestamp) in (1,7)
+
+
+
+58:
+
+
+
+
+
+59:select order_id,
+        customer_name,
+        order_placed_timestamp,
+        city 
+from deliverydash 
+where order_placed_timestamp>= date_sub('2024-06-30', interval 7 day)
+
+
+
+
+60:select count(order_id),
+        hour(order_delivered_timestamp)
+from deliverydash 
+group by hour(order_delivered_timestamp)
+order by hour(order_delivered_timestamp) asc
+
+
+
+
+
+
+
 
 
 
