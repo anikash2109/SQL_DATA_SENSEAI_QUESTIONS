@@ -571,6 +571,50 @@ order by hour(order_delivered_timestamp) asc
 
 
 
+61: 
+
+
+
+62:select student_name,
+        course_name,
+        attendance_date,
+        assignment_submission_date
+from edutrack 
+where assignment_submission_date> attendance_date - interval 2 day
+
+
+
+63:select date_format(attendance_date, '%Y-%m') as month,
+        count(attendance_id) as total_attendance
+from edutrack 
+where attendance_status='Present'
+group by date_format(attendance_date, '%Y-%m')
+
+
+
+
+
+64:select student_name,
+       exam_score,
+        case
+        when exam_score>=85 then 'High'
+        when exam_score between 70 and 84 then 'Medium'
+        when exam_score<70 then 'Low'
+        end performance_tier 
+from edutrack 
+
+
+
+
+65:select Student_Name, Course_Name,
+Assignment_Submission_Date, Exam_Date,
+Datediff(exam_date , Assignment_Submission_Date)
+from edutrack
+where Assignment_Submission_Date = Date_sub(exam_date , interval 12 Day);
+
+
+
+66: 
 
 
 
