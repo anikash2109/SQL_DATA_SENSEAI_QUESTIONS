@@ -628,6 +628,96 @@ where Assignment_Submission_Date = Date_sub(exam_date , interval 12 Day);
 
 
 
+81:
+
+
+
+
+
+
+
+82: select model_name,
+       training_duration_days 
+from llm_development 
+where training_duration_days>
+ (select min(training_duration_days) from llm_development
+ where fine_tuned=1)
+
+
+
+
+83:select model_name,
+       usage_count_million
+from llm_development 
+where  usage_count_million>(select avg(usage_count_million)*2 from llm_development
+where model_status = 'Retired')
+
+
+
+84: select model_name,
+        training_data_size_gb
+from llm_development 
+where training_data_size_gb<(select avg(training_data_size_gb)from llm_development
+where year(release_date)='2023')
+
+
+
+85:select model_name,
+        training_data_size_gb
+from llm_development 
+where training_data_size_gb<(select max(training_data_size_gb)
+from llm_development where year(release_date)='2023')
+
+
+86:select model_name,
+        accuracy_percent,
+        training_duration_days
+from llm_development 
+where accuracy_percent>90 and 
+training_duration_days<(select avg(training_duration_days) from llm_development)
+
+
+
+
+87:select model_name,
+        training_data_size_gb
+from llm_development 
+where training_data_size_gb>(select avg(training_data_size_gb)
+from llm_development where year(release_date)<'2022')
+
+
+
+88:select model_name,
+        inference_speed_tokens_per_sec
+from llm_development 
+where inference_speed_tokens_per_sec<(select inference_speed_tokens_per_sec 
+ from llm_development where parameters_in_billion=(select min(parameters_in_billion) from llm_development))
+
+
+
+89:select model_name,
+        accuracy_percent
+from llm_development 
+where accuracy_percent> all (select accuracy_percent from 
+llm_development where year(release_date)='2021')
+
+
+
+
+90:SELECT model_name,
+       training_duration_days
+FROM llm_development
+WHERE training_duration_days > (
+    SELECT (MIN(training_duration_days) + MAX(training_duration_days)) / 2
+    FROM llm_development
+    WHERE fine_tuned = 1
+);
+
+
+
+
+
+
 
 
 
