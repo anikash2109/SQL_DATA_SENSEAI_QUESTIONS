@@ -749,6 +749,53 @@ from esports_tournament)
 
 
 
+95:select team_name,
+        matches_won
+from esports_tournament 
+where matches_won<(select sum(matches_played)-sum(matches_won) from
+esports_tournament)
+
+
+
+
+96:
+
+
+
+
+
+
+97: select team_name,
+    game_title,
+    region,
+    win_rate_percent 
+from esports_tournament as a
+where win_rate_percent>(select avg(win_rate_percent)
+from esports_tournament as b
+where a.game_title=b.game_title and 
+a.region=b.region)
+
+
+
+
+98:select team_name,
+        game_title,
+        avg_match_duration_minutes
+from esports_tournament as a
+where avg_match_duration_minutes>
+(select min(avg_match_duration_minutes) from
+esports_tournament as b where team_ranking<5
+and a.game_title=b.game_title )
+
+
+
+
+99:
+
+
+
+
+
 
 
 
