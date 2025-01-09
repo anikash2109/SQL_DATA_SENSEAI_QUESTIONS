@@ -781,7 +781,7 @@ a.region=b.region)
 98:select team_name,
         game_title,
         avg_match_duration_minutes
-from esports_tournament as a
+from esports_tournament as a                           (chat Gpt)
 where avg_match_duration_minutes>
 (select min(avg_match_duration_minutes) from
 esports_tournament as b where team_ranking<5
@@ -790,7 +790,122 @@ and a.game_title=b.game_title )
 
 
 
-99:
+99:SELECT team_name,
+       tournament_name,                                 (chat gpt)
+       total_deaths
+FROM esports_tournament AS a
+WHERE total_deaths > (
+    SELECT AVG(total_kills)
+    FROM esports_tournament AS b
+    WHERE a.tournament_name = b.tournament_name
+);
+
+
+
+
+100: select team_name,
+    Region,
+    matches_won,
+    win_rate_percent,
+    participation_fee_usd 
+from esports_tournament 
+where (matches_won<5) and 
+(win_rate_percent<40) and (participation_fee_usd>3000) and 
+(Region='NA' or Region='EU')
+
+
+
+
+101:select comment_id,
+        user_name,
+        substring(comment_text, 1,10 ) as preview_text 
+from socialhub_comments 
+
+
+
+102: select comment_id,
+        user_name,
+        comment_text
+from socialhub_comments
+where comment_text like '%the%'
+
+
+
+
+103:select comment_id,
+        user_name,
+        substring_index(mentions, '@', -1)
+from socialhub_comments
+where substring_index(mentions, '@', -1) is not null
+
+
+
+
+104: select comment_id,
+        user_name,
+        reverse(comment_text)
+from socialhub_comments 
+where sentiment='Negative'
+
+
+
+
+
+105: select comment_id,
+       replace(mentions, '@', '(at)')
+from socialhub_comments 
+
+
+
+106:select comment_id,
+       hashtags
+from socialhub_comments 
+where hashtags regexp'work'
+
+
+
+107: select substring_index(email, '@', -1),
+count(distinct(user_name))
+from socialhub_comments
+group by substring_index(email,'@', -1)
+
+
+
+
+108:select substring_index(email, '@', -1),
+count(distinct(user_name))
+from socialhub_comments
+group by substring_index(email, '@', -1)
+
+
+
+
+
+109:  select comment_id,
+user_name,
+substring(replace(replace(replace(replace(replace(reverse
+(comment_text),'a', '*'),'e','*'),'i', '*'),'o','*'),'u','*'),1,20)
+from socialhub_comments
+where platform='Instagram'
+
+
+
+110: 
+
+
+
+
+
+
+
+
+111:
+
+
+
+
+
+    
 
 
 
