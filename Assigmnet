@@ -890,7 +890,7 @@ where platform='Instagram'
 
 
 
-110: 
+110:
 
 
 
@@ -899,7 +899,58 @@ where platform='Instagram'
 
 
 
-111:
+111:select year(concert_date) as concert_year,
+        month(concert_date) as concert_month,
+        sum(revenue) 
+from global_concert_tour 
+where concert_date>= last_day(concert_date)- interval 4 day and       (chatGpt) 
+concert_date <= last_day(concert_date)
+group by year(concert_date),
+        month(concert_date)
+
+
+
+
+112: SELECT 
+    YEAR(concert_date) AS concert_year,
+    MONTH(concert_date) AS concert_month,                        (chatgpt)
+    AVG(tickets_sold) AS avg_tickets_sold
+FROM 
+    global_concert_tour
+WHERE 
+    DAY(concert_date) BETWEEN 1 AND 7
+GROUP BY 
+    YEAR(concert_date),
+    MONTH(concert_date);
+
+
+113:select year(concert_date),
+    monthname(concert_date),
+    month(concert_date),
+    case 
+    when day(concert_date) <=15 then 'first half'
+    else 'second half'
+    end as interval_period,
+    sum(revenue)
+from global_concert_tour
+group by year(concert_date), monthname(concert_date),month(concert_date), interval_period
+order by month(concert_date),sum(revenue) asc
+
+
+
+114:select year(concert_date),
+        case
+        when month(concert_date) between 1 and 3 then 1
+        when month(concert_date) between 4 and 6 then 2
+        when month(concert_date) between 7 and 9 then 3
+        when month(concert_date) between 10 and 12 then 4 
+        end as concert_quater,
+        sum(revenue) as total_revenue 
+from global_concert_tour 
+group by year(concert_date), concert_quater
+
+
+
 
 
 
