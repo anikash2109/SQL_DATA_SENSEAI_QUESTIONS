@@ -952,6 +952,131 @@ group by year(concert_date), concert_quater
 
 
 
+115: select year(concert_date),
+        monthname(concert_date),
+        singer,
+        location,
+        concert_date,
+        revenue
+from global_concert_tour
+where weekday(concert_date) in (5,6)
+
+
+
+
+116: select year(concert_date),
+        monthname(concert_date),
+        month(concert_date),
+        sum(revenue)
+from global_concert_tour 
+where concert_date>= last_day(concert_date)- interval 10 day 
+group by year(concert_date),
+        monthname(concert_date),
+        month(concert_date)
+order by month(concert_date)
+
+
+
+
+117:select year(concert_date),
+        monthname(concert_date),
+        avg(revenue)
+from global_concert_tour 
+where concert_date> last_day(concert_date)-interval 5 day 
+group by year(concert_date),monthname(concert_date)
+order by year(concert_date), monthname(concert_date)
+
+
+
+118: 
+
+119:
+
+
+120:select year(concert_date),
+        month(concert_date),
+        singer,
+        sum(revenue),
+        sum(revenue)*100/(select sum(revenue) from global_concert_tour)
+from global_concert_tour 
+group by year(concert_date),
+        month(concert_date),
+        singer
+
+
+
+121:select battle_name,
+        attendance_capacity 
+from battles 
+where attendance_capacity=(select max(attendance_capacity) from battles)
+
+
+
+122: 
+
+
+
+
+
+
+123:select battle_name,
+        budget 
+from battles 
+where budget >(select avg(budget) from battles)
+
+
+
+124:
+
+
+
+
+125:select battle_name,
+       weather_condition 
+from battles as a
+where weather_condition in(select weather_condition
+from battles where budget=(select max(budget) from
+battles))
+
+
+
+
+126:select battle_name,
+        max(attendance_capacity)
+from battles 
+group by battle_name
+order by max(attendance_capacity) desc
+limit 1 offset 1
+
+
+
+
+127:select battle_name,
+     max(day(Reenactment_End_Date)-day(Reenactment_start_Date)) as duration
+from battles
+group by battle_name
+order by max(day(Reenactment_End_Date)-day(Reenactment_start_Date)) desc
+limit 1
+
+
+
+
+
+128:select battle_name,
+        min(budget)
+from battles 
+group by battle_name
+order by min(budget)
+limit 1 offset 1
+
+
+
+
+
+129: 
+
+
+
 
 
 
