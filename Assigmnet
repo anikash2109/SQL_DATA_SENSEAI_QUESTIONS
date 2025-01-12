@@ -1079,6 +1079,50 @@ limit 1 offset 1
 
 
 
+130:
+
+
+
+
+131: select post_id,
+    replace(substring_index(hashtags,'#', 2),',','')
+from social_posts
+
+
+
+132:
+
+
+
+
+
+
+133:SELECT 
+    user_name,
+    (likes + shares) AS engagement,
+    round((likes + shares) * 100.0 / 
+    (SELECT SUM(likes + shares) FROM social_posts),4) 
+    AS engagement_rate
+FROM 
+    social_posts
+order by engagement_rate desc 
+
+
+
+134:SELECT 
+    COUNT(CASE WHEN Sentiment = 'Positive' THEN 1 END) * 100.0 / COUNT(*) AS positive_percentage
+FROM 
+    social_posts;
+
+
+
+
+135:
+
+
+
+
+
 
 
     
