@@ -1147,7 +1147,71 @@ LIMIT 1;
 
 
 
-139
+139: SELECT 
+    author_name,
+    SUM(quantity_sold) AS total_books_sold,
+    SUM(quantity_sold) * 100.0 / (SELECT SUM(quantity_sold) FROM bookstore_sales) AS percentage_contribution
+FROM 
+    bookstore_sales
+GROUP BY 
+    author_name
+ORDER BY 
+    total_books_sold DESC;
+
+
+
+140: select book_title
+from bookstore_sales 
+where length(customer_review)>                    (chatGpt)
+(select avg(length(customer_review))
+from bookstore_sales 
+where customer_review is not null)
+
+
+
+141:SELECT 
+    book_title,
+    author_name
+FROM 
+    bookstore_sales
+WHERE 
+    author_name IN (
+        SELECT                                 (chatgpt)
+            author_name
+        FROM 
+            bookstore_sales
+        GROUP BY 
+            author_name
+        HAVING 
+            COUNT(DISTINCT sale_date) >= 3
+    );
+
+
+
+
+142:
+
+143:
+144:
+
+
+
+
+
+145:select author_name,
+        date_format(sale_date,'%Y-%m'),
+        total_revenue 
+from bookstore_sales 
+where author_name in (select author_name 
+from bookstore_sales where total_revenue in(select 
+max(total_revenue) from bookstore_sales
+where sale_date >= last_day(sale_date)- interval 7 day ))
+
+
+
+146:
+
+
 
 
 
