@@ -1121,6 +1121,36 @@ FROM
 
 
 
+136:
+
+
+137: select book_title,
+        genre 
+from bookstore_sales
+where genre in (select 
+genre from bookstore_sales 
+group by genre 
+having count(*)= 1)
+
+
+
+138: SELECT 
+    Book_Title,
+    COUNT(DISTINCT Customer_Location) AS Unique_Cities
+FROM 
+    bookstore_sales
+GROUP BY 
+    Book_Title
+ORDER BY 
+    Unique_Cities DESC
+LIMIT 1;
+
+
+
+139
+
+
+
 
 
 
