@@ -1211,6 +1211,37 @@ where sale_date >= last_day(sale_date)- interval 7 day ))
 
 146:
 
+147:select post_id ,
+length(hashtags) - length(replace(hashtags,',','')) + 1 as count     (chatgpt/ aayush)
+from indian_influencers
+group by post_id ;
+
+
+
+148:select  distinct influencer_name,
+       count(distinct(category)) 
+from indian_influencers 
+group by  influencer_name
+order by count(distinct(category)) desc
+limit 3
+
+
+
+149:
+
+
+
+
+
+150:SELECT DISTINCT Influencer_Name
+FROM indian_influencers AS outer_table
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM indian_influencers AS inner_table
+    WHERE inner_table.Influencer_Name = outer_table.Influencer_Name
+    AND inner_table.Sentiment != 'Positive'
+);
+
 
 
 
