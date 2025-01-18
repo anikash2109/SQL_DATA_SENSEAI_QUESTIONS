@@ -1012,7 +1012,13 @@ where attendance_capacity=(select max(attendance_capacity) from battles)
 
 
 
-122: 
+122: select battle_name,
+        Reenactment_Start_Date
+from battles 
+where month(Reenactment_Start_Date)= (select month(Reenactment_Start_Date)
+from battles where budget =(select max(budget) from battles)
+and year(Reenactment_Start_Date) = (select year(Reenactment_Start_Date) from 
+battles where budget =(select max(budget) from battles)
 
 
 
@@ -1026,7 +1032,18 @@ where budget >(select avg(budget) from battles)
 
 
 
-124:
+124:SELECT Location, 
+SUM(Budget) AS Total_Budget
+FROM battles
+GROUP BY Location
+HAVING SUM(Budget) = (
+    SELECT MAX(Total_Budget)
+    FROM (
+        SELECT SUM(Budget) AS Total_Budget                        (Help from satvik sir )
+        FROM battles
+        GROUP BY Location
+    ) AS Location_Budgets
+);
 
 
 
@@ -1090,7 +1107,10 @@ from social_posts
 
 
 
-132:
+132:select post_id,
+length(mentions)-length(replace(mentions,',', ''))+1
+from social_posts
+
 
 
 
@@ -1117,11 +1137,25 @@ FROM
 
 
 
-135:
+135:select post_id,
+     post_content
+from social_posts
+group by post_id
+having max(length(regexp_substr(post_content,'[a-zA-z]+'))) 
+order by  max(length(regexp_substr(post_content,'[a-zA-z]+'))) desc                        (just got the help of regexxp function through chatgpt)
+limit 1
 
 
 
-136:
+136:select book_title,
+    sum(quantity_sold)
+from bookstore_sales 
+group by book_title  
+having sum(quantity_sold) in(select max(quantity_sold) from bookstore_sales    (chatgpt a little help)
+)
+
+
+
 
 
 137: select book_title,
