@@ -990,7 +990,23 @@ order by year(concert_date), monthname(concert_date)
 
 118: 
 
-119:
+119:SELECT 
+    YEAR(concert_date), 
+    monthname(concert_date),
+    month(concert_date),
+avg(case when dayofweek(concert_date) in (2,3,4,5,6) then revenue
+else null end) as weekday_revenue,                                                        (Got logic with help)
+avg(case when dayofweek(concert_date) in (1,7) then revenue
+else null end) as weekend_revenue
+from global_concert_tour 
+where concert_date >= last_day(concert_date)-interval 9 day and
+concert_date<= last_day(concert_date)
+    group by YEAR(concert_date), 
+    monthname(concert_date),
+    month(concert_date)
+order by month(concert_date)
+
+    
 
 
 120:select year(concert_date),
