@@ -890,7 +890,10 @@ where platform='Instagram'
 
 
 
-110:
+110:select user_name,
+        email
+from socialhub_comments 
+where user_name not like'%a%'
 
 
 
