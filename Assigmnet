@@ -615,7 +615,35 @@ where Assignment_Submission_Date = Date_sub(exam_date , interval 12 Day);
 
 
 
-66: 
+66: SELECT
+    train_name,
+    scheduled_departure,
+    actual_departure,
+    FLOOR(TIMESTAMPDIFF(MINUTE, scheduled_departure, actual_departure) / 60) AS delay_hours,                (complete help)
+    MOD(TIMESTAMPDIFF(MINUTE, scheduled_departure, actual_departure), 60) AS delay_minutes
+FROM
+    train_schedule
+where actual_departure > scheduled_departure ;
+
+
+
+67:select train_name,
+        scheduled_departure,
+        actual_departure,
+        scheduled_arrival,                                        (just where clause comparisons)
+        actual_arrival 
+from train_schedule 
+where (actual_departure>scheduled_departure) and 
+actual_arrival<scheduled_arrival
+
+
+
+
+68:
+
+
+
+
 
 
 
@@ -624,6 +652,23 @@ where Assignment_Submission_Date = Date_sub(exam_date , interval 12 Day);
 
 
 69:
+
+
+70
+
+
+
+71: SELECT 
+    train_name,
+    passenger_count,                                                (ChatGpt)
+    date_of_journey
+FROM 
+    train_schedule
+WHERE 
+    cancelled_flag = 1
+    AND passenger_count > 200
+    AND DAYOFWEEK(date_of_journey) BETWEEN 2 AND 6; -- Monday (2) to Friday (6)
+
 
 
 
@@ -726,7 +771,12 @@ from esports_tournament where tournament_name = 'World Cup')
 
 
 
-92:
+92:select team_name,
+        game_title,
+        prize_pool_usd 
+from esports_tournament as a
+where prize_pool_usd =(select max(prize_pool_usd)
+from esports_tournament as b where a.game_title=b.game_title)
 
 
 
@@ -742,7 +792,12 @@ from esports_tournament)
 
 
 
-94:
+94:select team_name,
+        game_title,
+        team_ranking 
+from esports_tournament as a
+where team_ranking in(select min(team_ranking)
+from esports_tournament as b where a.game_title=b.game_title)
 
 
 
@@ -758,7 +813,12 @@ esports_tournament)
 
 
 
-96:
+96:select team_name,
+        total_kills,
+        region
+from  esports_tournament as a 
+where total_kills>all(select avg(total_kills *1.5)
+from esports_tournament)
 
 
 
