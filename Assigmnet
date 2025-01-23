@@ -120,7 +120,15 @@ limit 5
 
 
 
-17:
+17:SELECT 
+    product_category,
+    SUM(quantity_purchased * price_per_unit) AS revenue_before_discount,
+    SUM(transaction_value) AS revenue_after_discount
+FROM 
+    payment_transactions
+GROUP BY 
+    product_category;
+
 
 
 
@@ -351,7 +359,34 @@ order by total_revenue desc
 
 
 
-40:
+40:select city,
+        membership_level,
+        sum(total_amount) as membershiprevenue,
+sum(total_amount)*100/(select sum(total_amount) from hotelbookings as a
+where a.city=hotelbookings.city) as contribution,
+case 
+when sum(total_amount)*100/(select sum(total_amount) from hotelbookings as a
+where a.city=hotelbookings.city) > 50 then 'High contributor'
+when sum(total_amount)*100/(select sum(total_amount) from hotelbookings as a
+where a.city=hotelbookings.city) between 25 and 50 then 'moderate contributor'
+when sum(total_amount)*100/(select sum(total_amount) from hotelbookings as a
+where a.city=hotelbookings.city) < 25 then 'Low contributor'
+end as loyalty
+from hotelbookings 
+group by city,membership_level
+having 
+case 
+when sum(total_amount)*100/(select sum(total_amount) from hotelbookings as a
+where a.city=hotelbookings.city)>50 then 'High Contributor'
+when sum(total_amount)*100/(select sum(total_amount) from hotelbookings as a
+where a.city=hotelbookings.city) between 25 and 50 then 'Moderate contributor'
+when sum(total_amount)*100/(select sum(total_amount) from hotelbookings as a
+where a.city=hotelbookings.city)<25 then 'Low contributor'
+end in('High Contributor', 'Moderate contributor')
+
+
+
+
 
 
 
