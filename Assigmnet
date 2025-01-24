@@ -607,7 +607,14 @@ order by hour(order_delivered_timestamp) asc
 
 
 
-61: 
+61: SELECT 
+    student_name,
+    course_name,
+    exam_date,
+    DATEDIFF(exam_date, '2024-06-10') AS Days_Until_Exam
+FROM 
+    edutrack;
+
 
 
 
@@ -674,7 +681,13 @@ actual_arrival<scheduled_arrival
 
 
 
-68:
+68:    select train_name,
+        scheduled_departure,
+        reschedule_time 
+    from train_schedule
+    where reschedule_time is not null and 
+    timestampdiff(minute,scheduled_departure,reschedule_time)<=30                        (Help)
+
 
 
 
@@ -1337,7 +1350,12 @@ WHERE
 
 
 
-142:
+142:select author_name,
+        date_format(sale_date, '%Y-%m')
+from bookstore_sales
+group by author_name,date_format(sale_date, '%Y-%m')
+having count(week(sale_date))>=2
+
 
 143:
 144:
@@ -1390,6 +1408,63 @@ WHERE NOT EXISTS (
     AND inner_table.Sentiment != 'Positive'
 );
 
+
+
+151: 
+
+
+
+
+152:SELECT 
+    post_id,
+    LENGTH(post_content) - LENGTH(REPLACE(post_content, ' ', '')) + 1 AS word_count
+FROM 
+    indian_influencers;
+
+
+
+153:         SELECT 
+    post_id, 
+    post_content
+FROM 
+    indian_influencers
+WHERE 
+    POSITION('exclusive' IN post_content) ;
+
+
+
+154:select post_id,
+    replace(hashtags,'#', 'HASHTAG-')
+from indian_influencers
+
+
+
+
+155:
+
+
+156:  select post_id,
+        concat(
+upper(substring(post_content,1,1)
+lower(substring(post_content, 2)
+) as capitalize_each_word
+from indian_influencers 
+
+
+157: select post_id,
+        reverse(post_content)
+from indian_influencers 
+
+
+
+158: 
+
+159:
+
+
+160:select post_id, 
+  rpad(post_content, 100, '*')
+from indian_influencers  
 
 
 
