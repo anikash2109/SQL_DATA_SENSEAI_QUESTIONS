@@ -1410,7 +1410,9 @@ WHERE NOT EXISTS (
 
 
 
-151: 
+151: select post_id,
+    replace(substring_index(hashtags, '#', 2),',', '')
+from indian_influencers 
 
 
 
@@ -1465,6 +1467,67 @@ from indian_influencers
 160:select post_id, 
   rpad(post_content, 100, '*')
 from indian_influencers  
+
+
+
+
+161: select post_id,
+        post_content 
+from indian_influencers 
+where left(post_content,position(' ', post_content) -1) = right(post_content, position(' ', reverse(post_content)-1)
+
+
+
+
+
+
+
+
+162:select post_id,
+        substring_index(hashtags, ',', -1)
+from indian_influencers 
+
+
+
+163:select post_id,
+        hashtags 
+from indian_influencers 
+
+
+
+
+164:select post_id,
+    replace(post_content, ' ', '_')
+from indian_influencers 
+
+
+
+
+165:select post_id,
+        substring_index(brand_tags, ',', -1)
+from indian_influencers
+where brand_tags <> ''
+
+
+
+166:select region,
+        sum(revenue_millions)
+from ai_startups
+where founded_year> 2015
+group by region
+order  by sum(revenue_millions) desc
+limit 1
+
+
+
+
+167:
+
+
+
+
+
+
 
 
 
