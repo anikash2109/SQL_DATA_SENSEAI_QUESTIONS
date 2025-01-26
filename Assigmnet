@@ -1521,7 +1521,105 @@ limit 1
 
 
 
-167:
+167:select top_investor,
+     sum(total_funding_millions)
+from ai_startups                                                        (just needed help regarding type of question)
+where annual_growth_rate >(select avg(annual_growth_rate)
+from ai_startups)
+group by top_investor
+order by sum(total_funding_millions) desc
+limit 1
+
+
+
+
+168: 
+
+
+
+
+169: select startup_name,
+    total_funding_millions,
+    funding_stage 
+from ai_startups  as a                                        (just needed to filter on the funding stage as given in  the question)                                                                                
+where industry = 'Healthcare' and 
+total_funding_millions>(select avg(total_funding_millions)
+from ai_startups as b 
+where a.funding_stage=b.funding_stage)
+
+
+
+170:         SELECT 
+    region,
+    COUNT(*) AS startup_count
+FROM 
+   ai_startups
+WHERE                                                                 (took help)
+    (Revenue_Millions / Total_Funding_Millions) > 2
+GROUP BY 
+    region
+ORDER BY 
+    startup_count DESC;
+
+
+171:
+
+
+
+
+172: 
+
+173:
+
+
+174:select founded_year,
+        avg(annual_growth_rate)
+from ai_startups 
+where profitability = 1 and 
+(employees)>100
+group by founded_year
+order by avg(annual_growth_rate) desc
+limit 1
+
+
+
+175:select top_investor,
+    sum(total_funding_millions)
+from ai_startups 
+where founded_year>2010
+group by top_investor
+order by sum(total_funding_millions) desc
+limit 5
+
+
+
+
+176: SELECT industry
+FROM (
+    SELECT 
+        industry,
+        SUM(CASE WHEN profitability = 1 AND rating > 4.5 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS percent  (Help chatgpt)
+    FROM ai_startups
+    GROUP BY industry
+) AS bb
+WHERE percent > 70;
+
+
+
+
+177:select region,
+avg(revenue_millions/employees)
+from ai_startups 
+where founded_year>2015
+group by region 
+order by avg(revenue_millions/employees) desc
+limit 1
+
+
+
+178:
+
+
 
 
 
