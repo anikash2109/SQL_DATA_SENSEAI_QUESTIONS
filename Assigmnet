@@ -1617,7 +1617,106 @@ limit 1
 
 
 
-178:
+178:SELECT 
+    industry,
+    sum(CASE WHEN profitability = 1 THEN total_funding_millions ELSE 0 end)-
+    sum(CASE WHEN profitability = 0 THEN total_funding_millions ELSE 0 END) as aniket 
+
+FROM 
+    ai_startups
+GROUP BY 
+    industry
+order by aniket desc
+limit 1
+
+
+179:  
+
+180:
+
+
+
+181: select transaction_year,
+        sum(revenue)
+from credit_card_performance 
+where card_type = 'Premium'
+group by transaction_year
+order by sum(revenue) asc
+limit 1
+
+
+
+
+182: select region, 
+(SUM(CASE WHEN Default_Flag = 1 THEN 1 ELSE 0 END) * 1.0/ COUNT(*)) * 100 AS default_rate
+                                                                                                (Help from chatgpt regarding the )
+    from credit_card_performance
+where card_type= 'Business'
+group by region
+
+
+
+183: SELECT 
+    region,
+    transaction_quarter,
+    total_profit
+FROM (
+    SELECT 
+        region,
+        transaction_quarter,
+        SUM(profit) AS total_profit,
+        RANK() OVER (PARTITION BY region ORDER BY SUM(profit) DESC) AS rankk                        (Best window problem)
+    FROM 
+        credit_card_performance
+    GROUP BY 
+        region, transaction_quarter
+) AS ranked_data
+WHERE 
+    rankk = 1
+ORDER BY 
+    region ASC;
+
+
+
+
+184: SELECT 
+    region,
+    transaction_quarter, 
+    round((SUM(loss_provision) / SUM(revenue) * 100), 8) AS loss_provision_percentage
+FROM 
+    credit_card_performance
+GROUP BY 
+    region, transaction_quarter
+ORDER BY 
+    loss_provision_percentage DESC;
+
+
+
+185:
+
+
+186:select transaction_year,
+        sum(transactions_count)
+from credit_card_performance
+group by transaction_year
+order by sum(transactions_count) desc
+limit 1
+
+
+
+187:select card_type,
+sum(profit)
+from  credit_card_performance 
+group by card_type
+order by sum(profit) desc
+limit 2
+
+
+
+188:
+
+
+
 
 
 
