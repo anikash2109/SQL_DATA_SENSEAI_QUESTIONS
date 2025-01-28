@@ -1715,6 +1715,23 @@ limit 2
 
 188:
 
+189:
+190:
+
+
+
+191:select week(order_date),
+    avg(tip_amount)
+from foodnest_delivery 
+where priority_flag = 'Yes'
+group  by week(order_date)
+order by avg(tip_amount) desc
+limit 1
+
+
+
+192: 
+
 
 
 
