@@ -1730,7 +1730,92 @@ limit 1
 
 
 
-192: 
+192: SELECT 
+    cuisine_type,
+    COUNT(CASE WHEN discount_applied > 20 THEN 1 END) * 100.0 / COUNT(*) AS discount_percentage                (help to calculate order percent)
+FROM 
+    foodnest_delivery
+WHERE 
+    order_status = 'Delivered'
+GROUP BY 
+    cuisine_type
+ORDER BY 
+    discount_percentage DESC
+    limit 1;
+
+
+
+193:select delivery_agent,
+        sum(order_value)
+from foodnest_delivery
+where repeat_customer='Yes'
+group by delivery_agent
+order by sum(order_value) desc
+limit 4
+
+
+
+
+194:select dayofweek(order_date),
+count(*)
+from foodnest_delivery
+where order_status='Cancelled'
+group by dayofweek(order_date)
+order by count(*) desc
+limit 1
+
+
+
+
+195:select week(order_date),
+    avg(order_value)
+from foodnest_delivery
+where repeat_customer='Yes'
+group by week(order_date)
+order by avg(order_value) desc
+limit 1
+
+
+
+196:SELECT 
+    EXTRACT(WEEK FROM Order_Date) AS Week_Number,
+    COUNT(CASE WHEN Feedback_Length > 30 THEN 1 END) * 100.0 / COUNT(*) AS Percentage_Feedback_Greater_Than_30
+FROM 
+    foodnest_delivery
+GROUP BY 
+    Week_Number
+ORDER BY 
+    Percentage_Feedback_Greater_Than_30 DESC
+LIMIT 1;
+
+
+
+
+
+197:select platform,
+        week(order_date),
+        sum(order_value) as total,
+        avg(tip_amount) as totaltip
+from foodnest_delivery 
+group by platform, week(order_date)
+
+
+
+198: select dayofweek(order_date),
+count(*)
+from foodnest_delivery
+where repeat_customer='No'
+group  by dayofweek(order_date)
+order by count(*) desc, dayofweek(order_date) asc
+limit 4
+
+
+
+
+
+
+199: 
+
 
 
 
