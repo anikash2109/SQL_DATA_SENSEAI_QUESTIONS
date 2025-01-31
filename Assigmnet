@@ -1814,7 +1814,15 @@ limit 4
 
 
 
-199: 
+199: select dayofweek(order_date),
+sum(tip_amount)/sum(order_value) as c
+from foodnest_delivery
+group by dayofweek(order_date)
+order by c desc
+limit 1
+
+
+200: 
 
 
 
