@@ -1632,7 +1632,27 @@ limit 1
 
 179:  
 
-180:
+180:select founded_year,
+        revenue_growth
+from(
+SELECT 
+    industry, 
+    founded_year,
+    (currentt - coalesce(previous,0)) AS revenue_growth,
+    dense_rank() OVER (PARTITION BY industry ORDER BY currentt - previous DESC) AS rnkk
+FROM (
+    SELECT 
+        industry,
+        founded_year,
+        SUM(revenue_millions) AS currentt,
+        LAG(SUM(revenue_millions)) OVER (PARTITION BY industry ORDER BY founded_year) AS previous
+    FROM 
+        ai_startups
+    GROUP BY 
+        industry, founded_year
+) AS a) as b 
+where rnkk=3 and founded_year=2016
+limit 1;
 
 
 
@@ -1692,7 +1712,18 @@ ORDER BY
 
 
 
-185:
+185:Select card_type,Transaction_Year,yoy_profit_growth from 
+(Select card_type,                                                         (Easy just steps are more)
+Transaction_Year, 
+(total_profit- coalesce(previous_year_profit,0)) as yoy_profit_growth, 
+rank() over(partition by card_type order by (total_profit- coalesce(previous_year_profit,0)) desc ) as rnk from 
+(Select card_type, 
+Transaction_Year, 
+sum(profit) as total_profit,
+lag(sum(profit)) over( partition by card_type order by Transaction_Year) as previous_year_profit
+from credit_card_performance group by card_type, Transaction_Year ) as a) as b where rnk=1 
+order by yoy_profit_growth ;
+
 
 
 186:select transaction_year,
@@ -1716,7 +1747,18 @@ limit 2
 188:
 
 189:
-190:
+
+
+
+
+
+
+190:SELECT customer_id, 
+       SUM(outstanding_balance) OVER (PARTITION BY customer_id) AS total_balance_growth   (Got the idea from youtube and gpt)
+FROM credit_card_performance -- Filter last 3 years dynamically
+ORDER BY total_balance_growth DESC
+limit 3;
+
 
 
 
@@ -1822,7 +1864,11 @@ order by c desc
 limit 1
 
 
-200: 
+200: Select order_date,
+sum(Order_Value)-coalesce(lag(sum(Order_Value)) over(order by order_date ),0) as revenue_growth
+from foodnest_delivery 
+group by order_date
+order by revenue_growth desc limit 5;                        (Got help regarding how to use coalesce)
 
 
 
