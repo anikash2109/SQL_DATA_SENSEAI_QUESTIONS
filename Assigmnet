@@ -1217,7 +1217,13 @@ limit 1 offset 1
 
 
 
-129: 
+129: SELECT 
+    DATEDIFF(Reenactment_Start_Date, LAG(Reenactment_Start_Date) OVER (ORDER BY Reenactment_Start_Date)) AS Gap_In_Days
+FROM 
+    battles
+ORDER BY 
+    Gap_In_Days DESC
+LIMIT 1;
 
 
 
@@ -1461,7 +1467,15 @@ from indian_influencers
 
 158: 
 
-159:
+
+
+
+159:SELECT 
+    sentiment,
+    AVG(LENGTH(post_content)) AS avg_sentiment_length
+FROM indian_influencers 
+GROUP BY sentiment
+
 
 
 160:select post_id, 
@@ -1533,7 +1547,12 @@ limit 1
 
 
 
-168: 
+168: select region,
+avg(total_funding_millions/founders_count) as k
+from ai_startups 
+group by region
+order by k desc
+limit 1
 
 
 
@@ -1569,7 +1588,16 @@ ORDER BY
 
 172: 
 
-173:
+173:select industry
+from(                                                        (Just needed sum agg help)
+select industry,
+sum(case
+    when funding_stage = 'Seed' then 1 else 0 end)/Count(*)*100 
+from ai_startups 
+group by industry
+having sum(case
+    when funding_stage = 'Seed' then 1 else 0 end)/Count(*)*100 >40 and
+sum(total_funding_millions)>100) as b
 
 
 174:select founded_year,
@@ -1630,7 +1658,7 @@ order by aniket desc
 limit 1
 
 
-179:  
+179: 
 
 180:select founded_year,
         revenue_growth
