@@ -699,10 +699,24 @@ actual_arrival<scheduled_arrival
 
 
 
-69:
+69:SELECT 
+    maintenance_day,
+    ROUND(AVG(TIMESTAMPDIFF(MINUTE, scheduled_departure, actual_departure)), 2) AS avg_delay_minutes
+FROM train_schedule
+WHERE DAYOFWEEK(date_of_journey) IN (1, 7)  and                         (help)
+ -- 1 = Sunday, 7 = Saturday
+GROUP BY maintenance_day
+ORDER BY FIELD(maintenance_day, 'Monday', 'Tuesday', 'Thursday', 'Sunday', 'Friday', 'Saturday');
 
 
-70
+
+70:SELECT train_name,
+        scheduled_departure,
+        actual_departure,
+        TIMESTAMPDIFF(minute,scheduled_departure,actual_departure) 
+FROM train_schedule
+WHERE TIMESTAMPDIFF(MINUTE, scheduled_departure, actual_departure) % 15 = 0;
+
 
 
 
@@ -1099,7 +1113,28 @@ order by year(concert_date), monthname(concert_date)
 
 
 
-118: 
+118: SELECT 
+    YEAR(concert_date) AS year,
+    MONTHNAME(concert_date) AS month_name,
+    MONTH(concert_date) AS month,
+    SUM(CASE WHEN DAY(concert_date) BETWEEN 1 AND 15 THEN revenue ELSE 0 END) AS first_half,
+    SUM(CASE WHEN DAY(concert_date) >= 16 THEN revenue ELSE 0 END) AS second_half,
+    CASE 
+        WHEN SUM(CASE WHEN DAY(concert_date) BETWEEN 1 AND 15 THEN revenue ELSE 0 END) = 0                      (Needed some help)
+        THEN NULL  -- Avoid division by zero
+        ELSE 
+            ((SUM(CASE WHEN DAY(concert_date) >= 16 THEN revenue ELSE 0 END) - 
+              SUM(CASE WHEN DAY(concert_date) BETWEEN 1 AND 15 THEN revenue ELSE 0 END)) 
+             / SUM(CASE WHEN DAY(concert_date) BETWEEN 1 AND 15 THEN revenue ELSE 0 END)) * 100
+    END AS percentage_change
+FROM global_concert_tour
+GROUP BY 
+    YEAR(concert_date), 
+    MONTHNAME(concert_date), 
+    MONTH(concert_date);
+
+
+
 
 119:SELECT 
     YEAR(concert_date), 
