@@ -1629,6 +1629,8 @@ ORDER BY
 
 172: 
 
+
+
 173:select industry
 from(                                                        (Just needed sum agg help)
 select industry,
@@ -1699,7 +1701,27 @@ order by aniket desc
 limit 1
 
 
-179: 
+179: SELECT 
+    country
+FROM (
+    SELECT 
+        country,
+        annual_growth_rate,
+        industry,
+        AVG(annual_growth_rate) OVER (PARTITION BY industry) AS avg_industry_growth
+    FROM 
+        ai_startups
+) subquery
+GROUP BY 
+    country
+HAVING 
+    COUNT(CASE WHEN annual_growth_rate > avg_industry_growth THEN 1 ELSE NULL END) * 100.0 / COUNT(*) > 50
+ORDER BY 
+    country DESC
+LIMIT 3;
+
+
+
 
 180:select founded_year,
         revenue_growth
@@ -1937,7 +1959,64 @@ limit 1
 sum(Order_Value)-coalesce(lag(sum(Order_Value)) over(order by order_date ),0) as revenue_growth
 from foodnest_delivery 
 group by order_date
-order by revenue_growth desc limit 5;                        (Got help regarding how to use coalesce)
+order by revenue_growth desc limit 5;   (Got help regarding how to use coalesce)
+
+
+
+---- joins ---
+201: select a.book_id,
+        a.title,
+        a.genre,
+        a.price,
+        b.supplier_name,
+        b.country,
+        b.phone_number 
+from book_details as a inner join suppliers as b 
+on a.supplier_id=b.supplier_id
+
+
+
+
+202: select distinct a.supplier_name,
+        a.country,
+        a.phone_number
+from suppliers as a left join book_details as b
+on a.supplier_id=b.supplier_id
+where b.genre='Fiction'
+
+
+
+
+203: SELECT s.supplier_name,
+       s.country,
+       s.phone_number,
+       b.title,
+       b.price
+FROM suppliers s
+JOIN book_details b 
+    ON s.supplier_id = b.supplier_id
+JOIN (
+    -- Get the maximum price for each supplier
+    SELECT supplier_id, MAX(price) AS max_price
+    FROM book_details
+    GROUP BY supplier_id
+) mps 
+    ON b.supplier_id = mps.supplier_id 
+    AND b.price = mps.max_price
+ORDER BY b.price DESC;
+
+
+
+204:select  distinct a.supplier_name,
+        a.country,
+        a.phone_number
+from suppliers as a left join book_details as b 
+on a.supplier_id=b.supplier_id
+where b.publication_year<=2000
+
+
+
+
 
 
 
