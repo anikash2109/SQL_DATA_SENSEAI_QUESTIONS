@@ -1506,7 +1506,17 @@ from indian_influencers
 
 
 
-158: 
+158: SELECT 
+substring_index(replace(mentions,',',' '),' ',1) AS username,                        (took help)
+COUNT(*) AS mention_count
+FROM 
+indian_influencers
+WHERE 
+mentions LIKE '%@%'
+GROUP BY 
+substring_index(replace(mentions,',',' '),' ',1)
+ORDER BY 
+mention_count DESC;
 
 
 
@@ -2013,6 +2023,72 @@ ORDER BY b.price DESC;
 from suppliers as a left join book_details as b 
 on a.supplier_id=b.supplier_id
 where b.publication_year<=2000
+
+
+
+205: select distinct a.genre,
+        count(distinct b.supplier_id)
+from book_details as a left join suppliers as b
+on a.supplier_id=b.supplier_id
+group by a.genre
+having count(*)>=2
+order by count(distinct b.supplier_id) desc
+limit 3
+
+
+
+206: select a.supplier_name,
+        a.country,
+        a.phone_number 
+from suppliers as a 
+where not  exists(                                (subquery help)
+    select 1
+    from book_details as b 
+    where a.supplier_id=b.supplier_id
+and  b.price>20
+)
+
+
+
+
+207:select a.supplier_name,
+        a.country,
+        sum(b.price) as total_revenue
+from suppliers as a join book_details as b
+on a.supplier_id=b.supplier_id
+group by a.supplier_name,
+        a.country 
+
+
+
+208: select a.book_id,
+        a.title,
+        a.genre,
+        a.price,
+        b.supplier_name
+from book_details as a left join suppliers as b 
+on a.supplier_id=b.supplier_id 
+where b.country='USA'
+
+
+
+
+
+209:select a.supplier_name,
+        a.country,
+         count(distinct b.genre) as genre_count
+from suppliers as a left join book_details as b
+on a.supplier_id=b.supplier_id
+group by a.supplier_name,
+        a.country
+having  count(distinct b.genre)>=2
+order by genre_count desc
+limit 10
+
+
+
+
+210: 
 
 
 
