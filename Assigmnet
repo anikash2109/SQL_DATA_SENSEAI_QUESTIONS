@@ -2091,6 +2091,40 @@ limit 10
 210: 
 
 
+211: select e.employee_id as empid,
+       e.employee_name as empname,
+       e.position as emplposition,
+       m.employee_name as manager_name
+from employees_company as e left join employees_company as m 
+on e.mentor_id= m.employee_id
+where m.employee_name is not null
+
+
+
+212: select e.employee_id as empid,
+       e.employee_name as empname,
+       e.position as emplposition,
+    
+       e.department as manager_department
+from employees_company as e left join employees_company as m 
+on e.mentor_id= m.employee_id
+where m.employee_name is null
+
+
+
+
+213: select m.employee_id as manager_id,
+    m.employee_name as manager_name,
+    count(*)
+from employees_company as m join employees_company as e 
+on  e.mentor_id=m.employee_id
+group by m.employee_id, m.employee_name 
+
+
+
+
+214: 
+
 
 
 
