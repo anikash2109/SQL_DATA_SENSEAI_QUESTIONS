@@ -2124,6 +2124,74 @@ group by m.employee_id, m.employee_name
 
 
 214: 
+215:
+216:
+217:
+218:
+219:
+220:
+
+
+221: select order_id,
+        order_date,
+        order_amount,
+        customer_name,
+        email 
+from online_orders as a inner join ecustomers as b 
+on a.customer_id=b.customer_id
+
+
+
+222: select a.customer_name,
+        b.order_id,
+        b.order_amount 
+from ecustomers as a join online_orders as b
+on a.customer_id=b.customer_id
+where b.order_amount>2000
+
+
+223:select a.customer_id,
+        a.customer_name,
+        b.order_id,
+        b.order_amount 
+from ecustomers as a  left join online_orders as b
+on a.customer_id=b.customer_id
+
+
+
+
+224:select a.customer_name,
+    a.email 
+from ecustomers as a left join online_orders as b 
+on a.customer_id=b.customer_id
+where b.order_amount is null
+
+
+
+
+225:
+
+
+
+226:select a.order_id,
+        a.order_amount,
+        a.payment_method
+from  online_orders  as a left join ecustomers as b 
+on a.customer_id=b.customer_id
+where b.customer_id is null
+
+
+
+227:select a.customer_id,
+        a.customer_name,
+        b.order_id,
+        b.order_amount 
+from ecustomers as a left  join online_orders as b 
+on a.customer_id=b.customer_id
+
+
+
+
 
 
 
