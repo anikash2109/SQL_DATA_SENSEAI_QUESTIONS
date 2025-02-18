@@ -2191,6 +2191,29 @@ on a.customer_id=b.customer_id
 
 
 
+228: select distinct a.customer_id,
+        a.customer_name,
+        b.order_id
+from ecustomers as a left join online_orders as b 
+on a.customer_id=b.customer_id
+where b.order_id is null
+
+
+229: select a.customer_id,
+        a.customer_name,
+        count(b.payment_method)
+from ecustomers as a join online_orders as b 
+on a.customer_id=b.customer_id
+group by a.customer_id, a.customer_name 
+having count(b.payment_method)>=2
+
+
+
+
+230: 
+
+
+
 
 
 
