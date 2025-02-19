@@ -2213,6 +2213,107 @@ having count(b.payment_method)>=2
 230: 
 
 
+231"select a.passenger_id,
+        a.first_name,
+        a.last_name,
+sum(b.ticket_price) as totalspend
+from  passengers as a  join flight_bookings as b 
+on a.passenger_id=b.passenger_id
+group by a.passenger_id,
+        a.first_name,
+        a.last_name
+order by totalspend desc
+limit 5
+
+
+
+
+
+232: select a.flight_id,
+        a.flight_number,
+count(b.booking_id) as passenger_count 
+from flights as a join flight_bookings as b 
+on a.flight_id=b.flight_id
+where a.status='Delayed'
+group by a.flight_id,
+        a.flight_number
+
+
+
+
+233:  select a.flight_id,
+        a.flight_number,
+timestampdiff(hour,a.departure_time, a.arrival_time) as totalhours 
+from flights as a join flights as b 
+on a.flight_id=b.flight_id
+
+
+
+
+234: select a.passenger_id,
+        a.first_name,
+        a.last_name,
+        b.destination_airport,
+count(a.passenger_id) as most_visits
+from passengers as a  join flights as b join flight_bookings as c 
+on a.passenger_id=c.passenger_id and 
+b.flight_id=c.flight_id
+group by a.passenger_id,
+        a.first_name,
+        a.last_name,
+        b.destination_airport
+
+
+
+
+235: select a.origin_airport,
+        sum(b.ticket_price) as revenue,
+        date_format(b.booking_date, '%Y-%m')
+from flights as a join flight_bookings as b 
+on a.flight_id=b.flight_id
+group by a.origin_airport, date_format(b.booking_date, '%Y-%m')
+
+
+
+
+236: 
+
+
+
+
+237: select a.flight_id,
+        a.flight_number,
+sum(b.ticket_price) as total_revenue 
+from flights as a  join flight_bookings as b 
+on a.flight_id=b.flight_id
+where b.fare_class= 'First'
+group  by a.flight_id,
+        a.flight_number
+
+
+
+
+238: 
+
+
+239:
+
+
+
+240:select b.passenger_id,
+        b.First_name,
+concat(a.origin_airport,  ' -> ' , a.destination_airport ),
+count(*) as flight_count
+from flights as a join passengers as b join flight_bookings as c
+on a.flight_id=c.flight_id and 
+b.passenger_id=c.passenger_id
+group by b.passenger_id,
+        b.First_name,
+        concat(a.origin_airport, ' -> ', a.destination_airport )
+having count(*)>= 2
+
+
+
 
 
 
