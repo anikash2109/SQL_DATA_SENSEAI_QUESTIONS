@@ -2313,6 +2313,111 @@ group by b.passenger_id,
 having count(*)>= 2
 
 
+241: 
+
+
+242:
+
+
+
+
+
+243:select a.passenger_id,
+group_concat(date_format(b.booking_date, '%Y-%m'))
+from passengers  as a join  flight_bookings as b 
+on a.passenger_id=b.passenger_id
+group by a.passenger_id
+having count(*)>=2
+order by a.passenger_id desc
+limit 2
+
+
+
+
+
+244:select a.airport_code,
+sum(c.ticket_price) as revenue 
+from airports as a join flights as b join flight_bookings as c
+on a.airport_code=b.origin_airport and 
+b.flight_id=c.flight_id
+group by a.airport_code, b.origin_airport
+order by revenue desc
+limit 1
+
+
+
+245:select  distinct a.flight_id,
+         a.flight_number
+from flights as a  left join flight_bookings as b 
+on a.flight_id=b.flight_id 
+where b.fare_class not in('Business', 'First')
+and a.flight_id in(6,7,8,9,10)
+
+
+
+
+246:select a.loyalty_tier,
+        round(avg(b.ticket_price),2)
+from passengers  as a join flight_bookings as b 
+on a.passenger_id=b.passenger_id
+group by a.loyalty_tier
+
+
+
+
+247:select flight_id,
+        flight_number,
+round(avg(diff),2) as avgbooking
+from(
+select a.flight_id,
+        a.flight_number,
+datediff(a.departure_time,b.booking_date) as diff
+from flights as a left join flight_bookings as b 
+on a.flight_id=b.flight_id) as k 
+group by flight_id, flight_number
+order by avgbooking asc
+limit 5
+
+
+
+
+
+248: select a.passenger_id,
+        a.first_name,
+        a.last_name,
+sum(b.ticket_price) as total_spendings 
+from passengers as a left join flight_bookings as b 
+on a.passenger_id=b.passenger_id
+group by a.passenger_id,
+        a.first_name,
+        a.last_name
+order by total_spendings desc
+limit 5
+
+
+
+249: select a.airport_code,
+        count(*) as totaldepartcount 
+from airports as a join flights as b 
+on a.airport_code=b.origin_airport 
+where b.status = 'Delayed'
+group  by a.airport_code
+order by totaldepartcount desc
+limit 1
+
+
+
+
+250: select a.flight_id,
+        a.flight_number,
+ max(b.ticket_price)-min(b.ticket_price) as pricerange
+from flights as a left join flight_bookings as b 
+on a.flight_id=b.flight_id 
+group by a.flight_id,a.flight_number
+order by pricerange desc
+limit 1
+
+
 
 
 
