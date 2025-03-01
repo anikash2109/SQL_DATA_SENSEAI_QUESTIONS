@@ -2169,7 +2169,13 @@ where b.order_amount is null
 
 
 
-225:
+225:select a.order_id,
+        a.order_amount,
+        b.customer_name,
+        b.email 
+from online_orders as a right join ecustomers as b 
+on a.customer_id=b.customer_id
+
 
 
 
@@ -2210,7 +2216,22 @@ having count(b.payment_method)>=2
 
 
 
-230: 
+230: SELECT 
+    b.order_id,
+    a.customer_name,
+    a.country,
+    b.payment_method
+FROM 
+    ecustomers AS a  
+JOIN 
+    online_orders AS b  
+ON 
+    a.customer_id = b.customer_id
+WHERE 
+    (a.country = 'India' AND b.payment_method NOT IN ('UPI', 'Net Banking'))                        (chatGpt)
+    OR 
+    (a.country <> 'India' AND b.payment_method NOT IN ('Credit Card', 'Debit Card'));
+
 
 
 231"select a.passenger_id,
