@@ -1632,7 +1632,14 @@ ORDER BY
     startup_count DESC;
 
 
-171:
+171:select industry,
+avg(total_funding_millions/founders_count) as founder
+from ai_startups as a 
+where annual_growth_rate>(select avg(annual_growth_rate)
+from ai_startups as b where a.industry=b.industry)
+group by industry
+order by founder desc
+limit 3
 
 
 
@@ -2297,7 +2304,20 @@ group by a.origin_airport, date_format(b.booking_date, '%Y-%m')
 
 
 
-236: 
+236: SELECT p.Passenger_ID, p.First_Name, p.Loyalty_Tier, COUNT(b.Booking_ID) AS Total_Bookings
+FROM Passengers p
+LEFT JOIN flight_Bookings b ON p.Passenger_ID = b.Passenger_ID
+GROUP BY p.Passenger_ID, p.First_Name, p.Loyalty_Tier
+HAVING COUNT(b.Booking_ID) = (
+    SELECT MAX(BookingCount)
+    FROM (
+        SELECT p2.Loyalty_Tier, COUNT(b2.Booking_ID) AS BookingCount
+        FROM Passengers p2
+        LEFT JOIN flight_bookings b2 ON p2.Passenger_ID = b2.Passenger_ID
+        GROUP BY p2.Passenger_ID, p2.Loyalty_Tier
+    ) AS Subquery
+    WHERE Subquery.Loyalty_Tier = p.Loyalty_Tier
+);        
 
 
 
@@ -2314,10 +2334,33 @@ group  by a.flight_id,
 
 
 
-238: 
+238: SELECT a.flight_id,
+       b.passenger_id AS passenger1_id,
+       b.first_name AS passenger1_name,
+       a.booking_date
+FROM flight_bookings AS a
+JOIN passengers AS b ON a.passenger_id = b.passenger_id
+JOIN flight_bookings AS d ON a.flight_id = d.flight_id AND a.booking_date = d.booking_date
+JOIN passengers AS c ON d.passenger_id = c.passenger_id 
+    AND LEFT(b.first_name, 3) = LEFT(c.first_name, 3) 
+    AND b.passenger_id <> c.passenger_id
+ORDER BY a.flight_id, a.booking_date;
 
 
-239:
+
+
+
+239:SELECT a.flight_id,
+       b.passenger_id AS passenger1_id,
+       b.first_name AS passenger1_name,
+       a.booking_date
+FROM flight_bookings AS a
+JOIN passengers AS b ON a.passenger_id = b.passenger_id
+JOIN flight_bookings AS d ON a.flight_id = d.flight_id AND a.booking_date = d.booking_date
+JOIN passengers AS c ON d.passenger_id = c.passenger_id 
+    AND LEFT(b.first_name, 3) = LEFT(c.first_name, 3) 
+    AND b.passenger_id <> c.passenger_id
+ORDER BY a.flight_id, a.booking_date;
 
 
 
@@ -2334,10 +2377,47 @@ group by b.passenger_id,
 having count(*)>= 2
 
 
-241: 
 
 
-242:
+
+
+241: select flight_id,
+        flight_number,
+datediff( latest,early) as v
+from(
+select a.flight_id,
+        a.flight_number,
+        min(b.booking_date) as early,
+        max(b.booking_date) as latest
+from flights as a left join flight_bookings as b 
+on a.flight_id=b.flight_id 
+group by a.flight_id, a.flight_number) as k 
+order by  v desc
+limit 1
+
+
+
+
+
+
+
+242:SELECT b.Fare_Class, 
+       CONCAT(f.Origin_Airport, ' -> ', f.Destination_Airport) AS Route, 
+       COUNT(b.Booking_ID) AS Booking_Count
+FROM flight_bookings b
+JOIN Flights f ON b.Flight_ID = f.Flight_ID
+GROUP BY b.Fare_Class, Route
+HAVING COUNT(b.Booking_ID) = (                                (took help for subquery )
+    SELECT MAX(Booking_Count)
+    FROM (
+        SELECT COUNT(b2.Booking_ID) AS Booking_Count
+        FROM flight_bookings b2
+        JOIN Flights f2 ON b2.Flight_ID = f2.Flight_ID
+        WHERE b2.Fare_Class = b.Fare_Class
+        GROUP BY f2.Origin_Airport, f2.Destination_Airport
+    ) AS Subquery
+)
+ORDER BY Fare_Class;
 
 
 
